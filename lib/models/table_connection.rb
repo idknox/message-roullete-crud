@@ -33,4 +33,11 @@ class Table_connection
       "DELETE FROM messages WHERE id=#{id}"
     )
   end
+
+  def insert_comment(comment, id)
+    @database_connection.sql(
+      "INSERT INTO messages (comment) VALUES " +
+      "('#{comment}') WHERE id=#{id}"
+    )
+  end
 end

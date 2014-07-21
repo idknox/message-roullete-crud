@@ -23,7 +23,7 @@ feature "Messages" do
     expect(page).to have_content("Message must be less than 140 characters.")
   end
 
-  scenario "As a user, I see a prefilled form when clicking Edit for a msg"do
+  scenario "As a user, I see a prefilled form when clicking Edit for a msg" do
     visit "/"
 
     fill_in "Message", :with => "a" * 3
@@ -66,5 +66,24 @@ feature "Messages" do
 
     expect(page).to_not have_content("a" * 3)
     expect(page).to have_content("Message Roullete")
+  end
+
+  scenario "user can comment on msg" do
+
+    visit "/"
+
+    fill_in "Message", :with => "a" * 3
+
+    click_button "Submit"
+
+    click_link("Comment")
+    fill_in("comment", :with => "Good idea!")
+    click_button("Add Comment")
+
+    expect(page).to have_content("Message Roullette")
+    expect(page).to have_content("Good idea!")
+    expect(page).to have_content("aaa")
+
+
   end
 end

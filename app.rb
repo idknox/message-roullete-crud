@@ -22,6 +22,9 @@ class App < Sinatra::Application
     erb :edit, :locals => {:message => @db.get_msg(params[:id])}
   end
 
+  get "/messages/:id/comment/new" do
+    erb :comment, :locals => {:id => params[:id]}
+  end
 
   post "/messages" do
     message = params[:message]
@@ -30,6 +33,11 @@ class App < Sinatra::Application
     else
       @db.add_msg(message)
     end
+    redirect "/"
+  end
+
+  post "/messages/:id/comment" do
+    @db.insert_comment(params[:comment], params[:id])
     redirect "/"
   end
 
@@ -48,7 +56,7 @@ class App < Sinatra::Application
     @db.del_msg(params[:id])
     redirect "/"
   end
-  
+
   private
 
   def too_long(msg)
