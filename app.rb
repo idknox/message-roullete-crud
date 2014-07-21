@@ -15,7 +15,17 @@ class App < Sinatra::Application
   get "/" do
     messages = @db.get_all
 
-    erb :home, locals: {messages: messages}
+    erb :home, locals: {
+      messages: messages,
+      comments: @db.get_comments_all
+    }
+  end
+
+  get "/messages/:id" do
+    erb :message, :locals => {
+      :message => @db.get_msg(params[:id]),
+      :comments => @db.get_comments(params[:id])
+    }
   end
 
   get "/messages/:id/edit" do

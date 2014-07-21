@@ -7,7 +7,8 @@
 <% messages.each do |message| %>
 
   <li id="<%= message["id"] %>">
-    <%= message["message"] %>
+    <a href="/messages/<%= message["id"] %>">
+      <%= message["message"] %></a>
     <a href="/messages/<%= message["id"] %>/edit">Edit</a>
 
     <form method="post" action="/messages/<%= message["id"] %>">
@@ -17,7 +18,12 @@
     <a href="/messages/<%= message["id"] %>/comment/new">
       Comment
     </a>
-  </li>
+    <% comments.each do |comment| %>
+    <% if comment["msg_id"] == message["id"] %>
+      <p><%= comment["body"] %></p>
+    <% end %>
+<% end %>
+</li>
 
 <% end %>
 

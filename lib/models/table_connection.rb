@@ -36,8 +36,19 @@ class Table_connection
 
   def insert_comment(comment, id)
     @database_connection.sql(
-      "INSERT INTO messages (comment) VALUES " +
-      "('#{comment}') WHERE id=#{id}"
+      "INSERT INTO comments (body, msg_id) VALUES " +
+        "('#{comment}', #{id})"
     )
+  end
+
+  def get_comments(id)
+    @database_connection.sql(
+      "SELECT body from comments WHERE msg_id=#{id}"
+    )
+  end
+
+  def get_comments_all
+    @database_connection.sql(
+      "SELECT * from comments")
   end
 end
