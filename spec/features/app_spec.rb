@@ -54,4 +54,17 @@ feature "Messages" do
     click_button "Edit Message"
     expect(page).to have_content("Message must be less than 140 characters.")
   end
+
+  scenario "user can delete message" do
+    visit "/"
+
+    fill_in "Message", :with => "a" * 3
+
+    click_button "Submit"
+
+    click_button "Delete"
+
+    expect(page).to_not have_content("a" * 3)
+    expect(page).to have_content("Message Roullete")
+  end
 end

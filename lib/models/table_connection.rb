@@ -27,4 +27,10 @@ class Table_connection
       "UPDATE messages set message='#{msg}' WHERE id=#{id}"
     )
   end
+
+  def del_msg(id)
+    @database_connection.sql(
+      "DELETE FROM messages WHERE id=#{id}"
+    )
+  end
 end

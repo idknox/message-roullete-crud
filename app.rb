@@ -43,6 +43,12 @@ class App < Sinatra::Application
       redirect "/"
     end
   end
+
+  delete "/messages/:id" do
+    @db.del_msg(params[:id])
+    redirect "/"
+  end
+  
   private
 
   def too_long(msg)
