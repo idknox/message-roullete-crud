@@ -31,12 +31,27 @@ feature "Messages" do
     click_button "Submit"
 
     click_link "Edit"
-
     find_field("msg").value
 
     fill_in "msg", :with => "Hello"
     click_button "Edit Message"
     expect(page).to have_content("Hello")
     expect(page).to have_content("Message Roullete")
+  end
+
+  scenario "user sees error if incorrect editing" do
+    visit "/"
+
+    fill_in "Message", :with => "a" * 3
+
+    click_button "Submit"
+
+    click_link "Edit"
+
+    find_field("msg").value
+
+    fill_in "msg", :with => "a" * 141
+    click_button "Edit Message"
+    expect(page).to have_content("Message must be less than 140 characters.")
   end
 end

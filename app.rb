@@ -19,23 +19,34 @@ class App < Sinatra::Application
   end
 
   get "/messages/:id/edit" do
-
     erb :edit, :locals => {:message => @db.get_msg(params[:id])}
   end
 
+
   post "/messages" do
     message = params[:message]
-    if message.length <= 140
-      @db.add_msg(message)
-    else
+    if too_long(message)
       flash[:error] = "Message must be less than 140 characters."
+    else
+      @db.add_msg(message)
     end
     redirect "/"
   end
 
   patch "/messages/:id" do
-    @db.update_msg(params[:msg], params[:id])
-    redirect "/"
+    message = params[:message]
+    if too_long(message)
+      flash[:error] = "Message must be less than 140 characters."
+      redirect back
+    else
+      @db.update_msg(params[:msg], params[:id])
+      redirect "/"
+    end
+  end
+  private
+
+  def too_long(msg)
+    msg.length > 140
   end
 
 end

@@ -4,3 +4,7 @@
   <input type="text" id="msg" name="msg" value="<%= message["message"] %>"/>
   <button type="submit">Edit Message</button>
 </form>
+
+<% if flash[:error] %>
+  <%= flash[:error] %><br>
+<% end %>
