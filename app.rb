@@ -1,7 +1,7 @@
 require "sinatra"
 require "active_record"
-require "gschool_database_connection"
 require "rack-flash"
+require_relative "./lib/models/table_connection"
 
 class App < Sinatra::Application
   enable :sessions
@@ -9,22 +9,32 @@ class App < Sinatra::Application
 
   def initialize
     super
-    @database_connection = GschoolDatabaseConnection::DatabaseConnection.establish(ENV["RACK_ENV"])
+    @db = Table_connection.new
   end
 
   get "/" do
-    messages = @database_connection.sql("SELECT * FROM messages")
+    messages = @db.get_all
 
     erb :home, locals: {messages: messages}
+  end
+
+  get "/messages/:id/edit" do
+
+    erb :edit, :locals => {:message => @db.get_msg(params[:id])}
   end
 
   post "/messages" do
     message = params[:message]
     if message.length <= 140
-      @database_connection.sql("INSERT INTO messages (message) VALUES ('#{message}')")
+      @db.add_msg(message)
     else
       flash[:error] = "Message must be less than 140 characters."
     end
+    redirect "/"
+  end
+
+  patch "/messages/:id" do
+    @db.update_msg(params[:msg], params[:id])
     redirect "/"
   end
 
